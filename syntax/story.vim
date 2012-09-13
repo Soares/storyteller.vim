@@ -25,8 +25,8 @@ syn region storySuper  start="\^" end="\^" oneline keepend contains=@storyInline
 syn region storySub    start="\~" end="\~" oneline keepend contains=@storyInline
 syn region storyMath   start="\$" end="\$" oneline keepend contains=@storyInline
 
-syn region storyItalicBold start="\*" end="\*" contained oneline keepend
-syn region storyBoldItalic start="\/" end="\/" contained oneline keepend
+syn region storyItalicBold start="\*" end="\*" contained oneline keepend contains=@storyInlineBase
+syn region storyBoldItalic start="\/" end="\/" contained oneline keepend contains=@storyInlineBase
 
 syn region storyTodo    start="{!" end="!}" oneline contains=storyTodo
 syn region storyNote    start="{-" end="-}" oneline contains=storyNote
