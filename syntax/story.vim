@@ -54,17 +54,18 @@ syn region storyMode matchgroup=storyModeDelimiter start="<" end=">" transparent
 syn match  storyModeArg excludenl "\(\\.\|[^\\|<]\)*|" contained contains=storyEscape,storyHashTag nextgroup=@storyInline skipwhite
 
 syn region storyCheck matchgroup=storyCheckDelimiter start="|" end="|" transparent contains=storyCheckArg,@storyInline
-syn match  storyCheckArg excludenl "\(\\.\|[^\\=|]\)*=" contained contains=storyEscape,storyHashTag nextgroup=@storyInline skipwhite
-"
-hi def storyItalic         term=italic      cterm=italic      gui=italic
-hi def storyBold           term=bold        cterm=bold        gui=bold
-hi def storyItalicBold     term=bold,italic cterm=bold,italic gui=bold,italic
-hi def storyBoldItalic     term=bold,italic cterm=bold,italic gui=bold,italic
+syn match  storyCheckArg excludenl "\(\\.\|[^\\=|]\)*=" contained contains=storyEscape,storyItalicHashTag nextgroup=@storyInline skipwhite
+syn match  storyItalicHashTag "@\(\w\|-\)\+" contained
+
+hi def storyItalic        term=italic      cterm=italic      gui=italic
+hi def storyBold          term=bold        cterm=bold        gui=bold
+hi def storyItalicBold    term=bold,italic cterm=bold,italic gui=bold,italic
+hi def storyBoldItalic    term=bold,italic cterm=bold,italic gui=bold,italic
 
 hi def link storyEscape              Special
 hi def link storyHeadingDelimiter    PreProc
 hi def link storyQuoteDelimiter      Constant
-hi def link storyAttribution         Constant
+hi def link storyAttribution         Underlined
 hi def link storyCode                PreProc
 hi def link storySuper               PreProc
 hi def link storySub                 PreProc
@@ -86,7 +87,9 @@ hi def link storyAnnotationDelimiter Constant
 hi def link storyAnnotationArg       Constant
 hi def link storyModeDelimiter       Identifier
 hi def link storyModeArg             Identifier
-hi def link storyCheckDelimiter      Underlined
-hi def link storyCheckArg            Underlined
+hi def link storyCheckDelimiter      Comment
+hi def link storyCheckArg            Comment
+
+hi def storyItalicHashTag term=italic ctermfg=2 cterm=italic guifg=2 gui=italic
 
 let b:current_syntax = "story"
