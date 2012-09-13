@@ -11,7 +11,8 @@ syn case ignore
 
 syn match storyEscape "\\[\\/*^~`$=%@&|\[\]{}<> ]"
 
-syn cluster storyInlineBase contains=storyCode,storySuper,storySub,storyMath,storyTodo,storyCheck,storyAnnotation,storyMode
+syn cluster storyComments   contains=storyTodo,storyNote,storyComment
+syn cluster storyInlineBase contains=storyCode,storySuper,storySub,storyMath,storyTodo,storyCheck,storyAnnotation,storyMode,@storyComments
 syn cluster storyInline     contains=@storyInlineBase,storyItalic,storyBold
 
 syn region storyHeading matchgroup=storyHeadingDelimiter start="^\s*#\+" end="#*\s*$" keepend oneline contains=@storyInline
@@ -38,24 +39,25 @@ syn match  storyIncludeParam "|" contained
 syn match storyRule "^ *\* *\* *\*[ *]*$"
 syn match storyRule "^ *- *- *-[ -]*$"
 
-syn region storyScene matchgroup=storySceneDelimiter start="^=" end="$" transparent contains=storySceneTag
+syn region storyScene matchgroup=storySceneDelimiter start="^=" end="$" transparent contains=storySceneTag,@storyComments
 syn match  storySceneTag "@\(\w\|-\)\+" contained nextgroup=storyCategory skipwhite
 syn match  storyCategory "#\(\w\|-\)\+" contained nextgroup=storyCategory skipwhite
 
-syn region storyPlace matchgroup=storyPlaceDelimiter start="^%" end="$" transparent contains=storyHashTag
-syn region storyTime  matchgroup=storyTimeDelimiter  start="^@" end="$" transparent contains=storyHashTag
-syn region storyNote  matchgroup=storyNoteDelimiter  start="^&" end="$" transparent contains=@storyInline
+syn region storyThings  matchgroup=storyThingDelimiter start="^+" end="$" transparent contains=storyHashTag,@storyComments
+syn region storyPlace   matchgroup=storyPlaceDelimiter start="^%" end="$" transparent contains=storyHashTag,@storyComments
+syn region storyTime    matchgroup=storyTimeDelimiter  start="^@" end="$" transparent contains=storyHashTag,@storyComments
+syn region storyNote    matchgroup=storyNoteDelimiter  start="^&" end="$" transparent contains=@storyInline
 syn match  storyHashTag "@\(\w\|-\)\+" contained
+
+syn region storyCheck matchgroup=storyCheckDelimiter start="|" end="|" transparent contains=storyCheckArg,@storyInline
+syn match  storyCheckArg excludenl "\(\\.\|[^\\=|]\)*=" contained contains=storyEscape,storyItalicHashTag nextgroup=@storyInline skipwhite
+syn match  storyItalicHashTag "@\(\w\|-\)\+" contained
 
 syn region storyAnnotation matchgroup=storyAnnotationDelimiter start="\[" end="\]" transparent contains=storyAnnotationArg,@storyInline
 syn match  storyAnnotationArg excludenl "\(\\.\|[^\\\[|]\)*|" contained contains=storyEscape,storyHashTag nextgroup=@storyInline skipwhite
 
 syn region storyMode matchgroup=storyModeDelimiter start="<" end=">" transparent contains=storyModeArg,@storyInline
 syn match  storyModeArg excludenl "\(\\.\|[^\\|<]\)*|" contained contains=storyEscape,storyHashTag nextgroup=@storyInline skipwhite
-
-syn region storyCheck matchgroup=storyCheckDelimiter start="|" end="|" transparent contains=storyCheckArg,@storyInline
-syn match  storyCheckArg excludenl "\(\\.\|[^\\=|]\)*=" contained contains=storyEscape,storyItalicHashTag nextgroup=@storyInline skipwhite
-syn match  storyItalicHashTag "@\(\w\|-\)\+" contained
 
 hi def storyItalic        term=italic      cterm=italic      gui=italic
 hi def storyBold          term=bold        cterm=bold        gui=bold
@@ -77,7 +79,8 @@ hi def link storyComment             Comment
 hi def link storyIncludeDelimiter    Type
 hi def link storyIncludeParam        Type
 hi def link storySceneDelimiter      Identifier
-hi def link storyPlaceDelimiter      Type
+hi def link storyThingDelimiter      Type
+hi def link storyPlaceDelimiter      PreProc
 hi def link storyTimeDelimiter       Constant
 hi def link storyNoteDelimiter       Statement
 hi def link storyHashTag             Statement
